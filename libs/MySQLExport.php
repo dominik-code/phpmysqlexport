@@ -95,7 +95,7 @@ class MySQLExport {
 
         $count_datasets = mysqli_num_rows($q_select_datasets);
 
-        if($count_datasets < 1) {
+        if ($count_datasets < 1) {
             // maybe generate empty statement ???
             die("no datasets to be fetched");
         }
@@ -109,23 +109,24 @@ class MySQLExport {
         while ($row = mysqli_fetch_row($q_select_datasets)) {
             $content .= $this->getInsertStatementHead();
             $content .= "(";
-            for($i=0; $i < $this->fieldCount; $i++){
-                $row_content =  str_replace("\n","\\n",mysqli_real_escape_string($row[$i]));
+            for ($i = 0; $i < $this->fieldCount; $i++) {
+                $row_content = str_replace("\n", "\\n", mysqli_real_escape_string($this->link, $row[$i]));
 
-                switch($this->fields[$i]->type){
-                    case 8: case 3:
-                    $content .=  $row_content;
-                    break;
+                switch ($this->fields[$i]->type) {
+                    case 8:
+                    case 3:
+                        $content .= $row_content;
+                        break;
                     default:
-                        $content .= "'". $row_content ."'";
+                        $content .= "'" . $row_content . "'";
                 }
-                if($i < $this->fieldCount-1){
-                    $content  .= ', ';
+                if ($i < $this->fieldCount - 1) {
+                    $content .= ', ';
                 }
             }
-            if(($r+1) == $row_count){
+            if (($r + 1) == $row_count) {
                 $content .= ");\n\n";
-            }else{
+            } else {
                 $content .= "),\n";
             }
             $r++;
