@@ -7,7 +7,8 @@ class MySQLExport {
     private $exportSQL = "";
     private $table = "newtable";
     private $insertHead = "";
-    private $maxrowsperloop = 5000;
+    private $maxrowsperloop = 1000000;
+    private $maxrowsperinsert = 500;
 
     private $host = "";
     private $port = 3306;
@@ -117,9 +118,11 @@ class MySQLExport {
             $r = 0;
             $row_count = mysqli_num_rows($q_select_datasets);
             $content = "";
-            $content .= $this->getInsertStatementHead();
+//            $content .= $this->getInsertStatementHead();
             while ($row = mysqli_fetch_row($q_select_datasets)) {
-
+                if(($r % $this->maxrowsperinsert) == 0){
+                    $content .= $this->getInsertStatementHead();
+                }
                 $content .= "(";
                 for ($i = 0; $i < $this->fieldCount; $i++) {
                     $row_content = str_replace("\n", "\\n", mysqli_real_escape_string($this->link, $row[$i]));
@@ -136,7 +139,7 @@ class MySQLExport {
                         $content .= ', ';
                     }
                 }
-                if (($r + 1) == $row_count) {
+                if (($r + 1) == $row_count || ($r % 400) == 399) {
                     $content .= ");\n\n";
                 } else {
                     $content .= "),\n";
