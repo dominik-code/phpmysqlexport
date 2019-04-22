@@ -12,6 +12,9 @@ require_once 'configuration.php';
 $tablename = "zuege";
 //$datum = date("Y-m-d", time());
 $datum = "2017-12-03";
+$datum = date('Y-m-d', strtotime('-1 year -7 days'));
+
+die($datum);
 $filename = $datum."_export_".$tablename.".sql";
 
 
