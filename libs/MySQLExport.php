@@ -99,7 +99,7 @@ class MySQLExport {
         }
 
 
-        $file = "$this->path . $this->filename";
+        $file = "$this->path" . "$this->filename";
         $fh = fopen($file, 'a') or die("can't open file");
 
         while ($row = mysqli_fetch_row($q_select_datasets)) {
