@@ -106,8 +106,9 @@ class MySQLExport {
         $r = 0;
         $row_count = mysqli_num_rows($q_select_datasets);
         $content = "";
+        $content .= $this->getInsertStatementHead();
         while ($row = mysqli_fetch_row($q_select_datasets)) {
-            $content .= $this->getInsertStatementHead();
+
             $content .= "(";
             for ($i = 0; $i < $this->fieldCount; $i++) {
                 $row_content = str_replace("\n", "\\n", mysqli_real_escape_string($this->link, $row[$i]));
