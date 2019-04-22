@@ -9,14 +9,23 @@ require_once 'libs/MySQLExport.php';
 
 require_once 'configuration.php';
 
+$export = new MySQLExport(HOST, PORT, USERNAME, PASSWORD, DATABASE);
+
 $tablename = "zuege";
+if(isset($_REQUEST['achive'])) {
+    $datum = $export->getOldestDate();
+
+} else {
+
 $datum = date('Y-m-d', strtotime('-1 year -7 days'));
+}
+
+die("$datum");
 
 $filename = $datum."_export_".$tablename.".sql";
 
 
 
-$export = new MySQLExport(HOST, PORT, USERNAME, PASSWORD, DATABASE);
 
 $export->testConnection();
 var_dump(microtime(true) - $start);
@@ -36,3 +45,11 @@ var_dump($export->gzCompressFile("dump/".$filename, 4));
 var_dump(microtime(true) - $start);
 
 unlink("dump/".$filename);
+
+if(file_exists("dump/$filename")) {
+    if(filesize("dump/$filename") > 1024*1024) {
+        $export->removeDatasets("DELETE FROM `zuege` WHERE datum='$datum'");
+    } else {
+        die("manual control needed for : ". $filename);
+    }
+}

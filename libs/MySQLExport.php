@@ -168,6 +168,40 @@ class MySQLExport {
         return true;
     }
 
+    public function getOldestDate() {
+        $this->link = mysqli_connect($this->host, $this->username, $this->password, $this->database, $this->port);
+
+
+        $q_use_database = mysqli_query($this->link, "USE `" . $this->database . "`");
+        if ($q_use_database === false) {
+            die("sql query failed");
+        }
+
+        $q_get_date = mysqli_query($this->link, "SELECT datum FROM `zuege` order by datum asc limit 1");
+        if ($q_get_date === false) {
+            die("sql query failed");
+        }
+
+        return mysqli_fetch_assoc($q_get_date)['datum'];
+
+    }
+
+    public function removeDatasets($sql) {
+        $this->link = mysqli_connect($this->host, $this->username, $this->password, $this->database, $this->port);
+
+
+        $q_use_database = mysqli_query($this->link, "USE `" . $this->database . "`");
+        if ($q_use_database === false) {
+            die("sql query failed");
+        }
+
+        $q_delete_datasets = mysqli_query($this->link, $sql);
+        if ($q_delete_datasets === false) {
+            die("sql query failed");
+        }
+
+    }
+
     public function testConnection() {
         $this->link = mysqli_connect($this->host, $this->username, $this->password, $this->database, $this->port);
         var_dump($this->link);
