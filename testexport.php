@@ -34,3 +34,5 @@ var_dump(memory_get_peak_usage());
 
 var_dump($export->gzCompressFile("dump/".$filename, 4));
 var_dump(microtime(true) - $start);
+
+unlink("dump/".$filename);
