@@ -7,7 +7,7 @@ class MySQLExport {
     private $exportSQL = "";
     private $table = "newtable";
     private $insertHead = "";
-    private $maxrowsperloop = 1000000;
+    private $maxrowsperloop = 10000;
     private $maxrowsperinsert = 500;
 
     private $host = "";
