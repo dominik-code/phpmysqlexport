@@ -15,7 +15,7 @@ $export->testConnection();
 
 $export->setExportFilename("testexport.sql");
 $export->setExportPath("");
-$export->setExportSQL("SELECT * FROM `zuege2` WHERE datum = '2018-06-12'");
+$export->setExportSQL("SELECT * FROM `errorlog` WHERE id > 250000");
 
 var_dump($export->doExport());
 var_dump($export->testInsertHead());
