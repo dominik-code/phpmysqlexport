@@ -39,7 +39,6 @@ class MySQLExport {
         $this->maxrowsperinsert = $maxrowsperinsert;
     }
 
-
     public function setExportPath($path) {
         $this->path = $path;
     }
