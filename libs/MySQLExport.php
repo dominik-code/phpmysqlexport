@@ -7,6 +7,7 @@ class MySQLExport {
     private $exportSQL = "";
     private $table = "newtable";
     private $insertHead = "";
+    private $maxrowsperloop = 1000;
 
     private $host = "";
     private $port = 3306;
@@ -31,10 +32,13 @@ class MySQLExport {
         $this->filename = $filename;
     }
 
+    /**
+     * do not use any limit clause as the tool will use own settings
+     * @param string $exportSQL the sql to be used for generation the export (without limit clause)
+     */
     public function setExportSQL($exportSQL) {
         $this->exportSQL = $exportSQL;
     }
-
 
     public function setTable($table) {
         $this->table = $table;
@@ -70,7 +74,6 @@ class MySQLExport {
         $insert_head .= ")";
         $insert_head .= " VALUES\n";
 
-        var_dump($insert_head);
         $this->insertHead = $insert_head;
     }
 
@@ -83,22 +86,25 @@ class MySQLExport {
         if ($q_use_database === false) {
             die("sql query failed");
         }
-        $q_select_datasets = mysqli_query($this->link, $this->exportSQL);
+        $q_select_datasets = mysqli_query($this->link, $this->exportSQL . " LIMIT 5");
         if ($q_select_datasets === false) {
             die("sql query failed");
         }
 
-        mysqli_fetch_fields($q_select_datasets);
-        mysqli_num_rows($q_select_datasets);
+        $count_datasets = mysqli_num_rows($q_select_datasets);
+
+        if($count_datasets < 1) {
+            // maybe generate empty statement ???
+            die("no datasets to be fetched");
+        }
+
 
         $file = "$this->path . $this->filename";
         $fh = fopen($file, 'a') or die("can't open file");
 
-        while ($row = mysqli_fetch_assoc($q_select_datasets)) {
+        while ($row = mysqli_fetch_row($q_select_datasets)) {
 
-            foreach ($row as $rowname => $value) {
-
-            }
+            var_dump(implode(", ", $row));
 
             fwrite($fh, $this->insertstatement);
         }
