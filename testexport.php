@@ -24,5 +24,5 @@ var_dump(microtime(true) - $start);
 
 var_dump(memory_get_peak_usage());
 
-var_dump($export->gzCompressFile("testexport.sql"));
+var_dump($export->gzCompressFile("testexport.sql", 4));
 var_dump(microtime(true) - $start);
