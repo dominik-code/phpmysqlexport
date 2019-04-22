@@ -46,8 +46,8 @@ var_dump(microtime(true) - $start);
 
 unlink("dump/".$filename);
 
-if(file_exists("dump/$filename")) {
-    if(filesize("dump/$filename") > 1024*1024) {
+if(file_exists("dump/$filename".".gz")) {
+    if(filesize("dump/$filename".".gz") > 1024*1024) {
         $export->removeDatasets("DELETE FROM `zuege` WHERE datum='$datum'");
     } else {
         die("manual control needed for : ". $filename);
