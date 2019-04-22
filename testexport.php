@@ -12,7 +12,10 @@ require_once 'configuration.php';
 $export = new MySQLExport(HOST, PORT, USERNAME, PASSWORD, DATABASE);
 
 $export->testConnection();
-//
-//$export->setExportFilename("testexport.sql");
-//$export->setExportPath("");
-//$export->setExportSQL("SELECT * FROM nothing");
+
+$export->setExportFilename("testexport.sql");
+$export->setExportPath("");
+$export->setExportSQL("SELECT * FROM `errorlog` WHERE id < 300000 and id > 200000");
+
+//var_dump($export->doExport());
+var_dump($export->testInsertHead());
