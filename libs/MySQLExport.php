@@ -41,7 +41,7 @@ class MySQLExport {
     }
 
     private function getInsertStatementHead() {
-        if($this->insertHead = "") {
+        if ($this->insertHead == "") {
             $this->setInsertStatementHead();
         }
         return $this->insertHead;
@@ -49,7 +49,7 @@ class MySQLExport {
 
     private function setInsertStatementHead() {
         $this->link = mysqli_connect($this->host, $this->username, $this->password, $this->database, $this->port);
-        $q_use_database = mysqli_query($this->link,"USE `" . $this->database . "`");
+        $q_use_database = mysqli_query($this->link, "USE `" . $this->database . "`");
         if ($q_use_database === false) {
             die("sql query failed");
         }
@@ -60,14 +60,14 @@ class MySQLExport {
 
         $fields = mysqli_fetch_fields($q_select_datasets);
         $fields_count = count($fields);
-        $insert_head = "INSERT INTO `".$this->table."` (";
-        for($i=0; $i < $fields_count; $i++){
-            $insert_head  .= "`".$fields[$i]->name."`";
-            if($i < $fields_count-1){
-                $insert_head  .= ', ';
+        $insert_head = "INSERT INTO `" . $this->table . "` (";
+        for ($i = 0; $i < $fields_count; $i++) {
+            $insert_head .= "`" . $fields[$i]->name . "`";
+            if ($i < $fields_count - 1) {
+                $insert_head .= ', ';
             }
         }
-        $insert_head .=  ")";
+        $insert_head .= ")";
         $insert_head .= " VALUES\n";
 
         var_dump($insert_head);
@@ -79,7 +79,7 @@ class MySQLExport {
         $this->link = mysqli_connect($this->host, $this->username, $this->password, $this->database, $this->port);
 
 
-        $q_use_database = mysqli_query($this->link,"USE `" . $this->database . "`");
+        $q_use_database = mysqli_query($this->link, "USE `" . $this->database . "`");
         if ($q_use_database === false) {
             die("sql query failed");
         }
