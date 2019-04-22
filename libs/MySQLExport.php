@@ -88,54 +88,66 @@ class MySQLExport {
         if ($q_use_database === false) {
             die("sql query failed");
         }
-        $q_select_datasets = mysqli_query($this->link, $this->exportSQL . " LIMIT 5");
-        if ($q_select_datasets === false) {
-            die("sql query failed");
-        }
-
-        $count_datasets = mysqli_num_rows($q_select_datasets);
-
-        if ($count_datasets < 1) {
-            // maybe generate empty statement ???
-            die("no datasets to be fetched");
-        }
-
-
-        $file = "$this->path" . "$this->filename";
-        $fh = fopen($file, 'a') or die("can't open file");
-        $r = 0;
-        $row_count = mysqli_num_rows($q_select_datasets);
-        $content = "";
-        $content .= $this->getInsertStatementHead();
-        while ($row = mysqli_fetch_row($q_select_datasets)) {
-
-            $content .= "(";
-            for ($i = 0; $i < $this->fieldCount; $i++) {
-                $row_content = str_replace("\n", "\\n", mysqli_real_escape_string($this->link, $row[$i]));
-
-                switch ($this->fields[$i]->type) {
-                    case 8:
-                    case 3:
-                        $content .= $row_content;
-                        break;
-                    default:
-                        $content .= "'" . $row_content . "'";
-                }
-                if ($i < $this->fieldCount - 1) {
-                    $content .= ', ';
-                }
+        // allow initial loop
+        $count_datasets = $this->maxrowsperloop;
+        $loop_count = 0;
+        while ($this->maxrowsperloop == $count_datasets) {
+            if($this->maxrowsperloop < 1) {
+                die("please set maxrowsperloop to more than 0");
             }
-            if (($r + 1) == $row_count) {
-                $content .= ");\n\n";
-            } else {
-                $content .= "),\n";
+
+            $offset = $loop_count * $this->maxrowsperloop;
+            // increase loop count to avoid endless loop
+            $loop_count++;
+            $q_select_datasets = mysqli_query($this->link, $this->exportSQL . " LIMIT $offset, $this->maxrowsperloop");
+            if ($q_select_datasets === false) {
+                die("sql query failed");
             }
-            $r++;
+
+            $count_datasets = (int) mysqli_num_rows($q_select_datasets);
+
+            if ($count_datasets < 1) {
+                // maybe generate empty statement ???
+                die("no datasets to be fetched");
+            }
+
+
+            $file = "$this->path" . "$this->filename";
+            $fh = fopen($file, 'a') or die("can't open file");
+            $r = 0;
+            $row_count = mysqli_num_rows($q_select_datasets);
+            $content = "";
+            $content .= $this->getInsertStatementHead();
+            while ($row = mysqli_fetch_row($q_select_datasets)) {
+
+                $content .= "(";
+                for ($i = 0; $i < $this->fieldCount; $i++) {
+                    $row_content = str_replace("\n", "\\n", mysqli_real_escape_string($this->link, $row[$i]));
+
+                    switch ($this->fields[$i]->type) {
+                        case 8:
+                        case 3:
+                            $content .= $row_content;
+                            break;
+                        default:
+                            $content .= "'" . $row_content . "'";
+                    }
+                    if ($i < $this->fieldCount - 1) {
+                        $content .= ', ';
+                    }
+                }
+                if (($r + 1) == $row_count) {
+                    $content .= ");\n\n";
+                } else {
+                    $content .= "),\n";
+                }
+                $r++;
+            }
+
+            fwrite($fh, $content);
+            fclose($fh);
+
         }
-
-        fwrite($fh, $content);
-        fclose($fh);
-
         return true;
     }
 
