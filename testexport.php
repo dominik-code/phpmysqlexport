@@ -15,7 +15,7 @@ $export->testConnection();
 
 $export->setExportFilename("testexport.sql");
 $export->setExportPath("");
-$export->setExportSQL("SELECT * FROM `errorlog` WHERE id < 300000 and id > 200000");
+$export->setExportSQL("SELECT * FROM `errorlog` WHERE id < 900000 and id > 0");
 
 var_dump($export->doExport());
 var_dump($export->testInsertHead());
