@@ -53,7 +53,7 @@ class MySQLExport {
         if ($q_use_database === false) {
             die("sql query failed");
         }
-        $q_select_datasets = mysqli_query($this->link, $this->exportSQL);
+        $q_select_datasets = mysqli_query($this->link, $this->exportSQL . " LIMIT 1");
         if ($q_select_datasets === false) {
             die("sql query failed");
         }
