@@ -10,7 +10,8 @@ require_once 'libs/MySQLExport.php';
 require_once 'configuration.php';
 
 $tablename = "zuege";
-$datum = date("Y-m-d", time());
+//$datum = date("Y-m-d", time());
+$datum = "2017-12-03";
 $filename = $datum."_export_".$tablename.".sql";
 
 
