@@ -12,15 +12,15 @@ require_once 'configuration.php';
 $export = new MySQLExport(HOST, PORT, USERNAME, PASSWORD, DATABASE);
 
 $tablename = "zuege";
-if(isset($_REQUEST['achive'])) {
+if(isset($_REQUEST['archive'])) {
     $datum = $export->getOldestDate();
 
 } else {
 
-$datum = date('Y-m-d', strtotime('-1 year -7 days'));
+    $datum = date('Y-m-d', strtotime('-1 year -7 days'));
 }
 
-die("$datum");
+
 
 $filename = $datum."_export_".$tablename.".sql";
 
