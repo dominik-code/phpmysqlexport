@@ -70,7 +70,7 @@ class MySQLExport {
         $insert_head .=  ")";
         $insert_head .= " VALUES\n";
 
-        $this->inserthead = $insert_head;
+        $this->insertHead = $insert_head;
     }
 
 
