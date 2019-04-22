@@ -196,7 +196,7 @@ class MySQLExport {
         if ($fp_out = gzopen($dest, $mode)) {
             if ($fp_in = fopen($source, 'rb')) {
                 while (!feof($fp_in))
-                    gzwrite($fp_out, fread($fp_in, 1024 * 512));
+                    gzwrite($fp_out, fread($fp_in, 1024 * 2048));
                 fclose($fp_in);
             } else {
                 $error = true;
