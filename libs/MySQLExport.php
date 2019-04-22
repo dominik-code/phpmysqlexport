@@ -59,4 +59,9 @@ class MySQLExport {
 
         fclose($fh);
     }
+
+    public function testConnection() {
+        $this->link = mysqli_connect($this->host, $this->username, $this->password, $this->database, $this->port);
+        var_dump($this->link);
+    }
 }
