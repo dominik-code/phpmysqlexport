@@ -15,7 +15,7 @@ $export->testConnection();
 var_dump(microtime(true) - $start);
 $export->setExportFilename("testexport.sql");
 $export->setExportPath("");
-$export->setExportSQL("SELECT * FROM `zuege2` WHERE datum='2018-06-12' ");
+$export->setExportSQL("SELECT * FROM `zuege` WHERE datum='2018-06-12' ");
 var_dump(microtime(true) - $start);
 $export->setMaxrowsperinsert(500);
 $export->setMaxrowsperloop(100000);
