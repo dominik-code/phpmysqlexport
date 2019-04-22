@@ -16,7 +16,8 @@ $export->testConnection();
 $export->setExportFilename("testexport.sql");
 $export->setExportPath("");
 $export->setExportSQL("SELECT * FROM `errorlog` WHERE id > 250000");
-
+$export->setMaxrowsperinsert(500);
+$export->setMaxrowsperloop(50000);
 var_dump($export->doExport());
 var_dump($export->testInsertHead());
 

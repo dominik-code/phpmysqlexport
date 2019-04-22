@@ -7,7 +7,7 @@ class MySQLExport {
     private $exportSQL = "";
     private $table = "newtable";
     private $insertHead = "";
-    private $maxrowsperloop = 10000;
+    private $maxrowsperloop = 20000;
     private $maxrowsperinsert = 500;
 
     private $host = "";
@@ -24,6 +24,21 @@ class MySQLExport {
         $this->password = $password;
         $this->database = $database;
     }
+
+    /**
+     * @param int $maxrowsperloop
+     */
+    public function setMaxrowsperloop($maxrowsperloop) {
+        $this->maxrowsperloop = $maxrowsperloop;
+    }
+
+    /**
+     * @param int $maxrowsperinsert
+     */
+    public function setMaxrowsperinsert($maxrowsperinsert) {
+        $this->maxrowsperinsert = $maxrowsperinsert;
+    }
+
 
     public function setExportPath($path) {
         $this->path = $path;
