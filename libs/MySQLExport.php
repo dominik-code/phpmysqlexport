@@ -108,7 +108,7 @@ class MySQLExport {
         $count_datasets = $this->maxrowsperloop;
         $loop_count = 0;
         while ($this->maxrowsperloop == $count_datasets) {
-            if($this->maxrowsperloop < 1) {
+            if ($this->maxrowsperloop < 1) {
                 die("please set maxrowsperloop to more than 0");
             }
 
@@ -120,7 +120,7 @@ class MySQLExport {
                 die("sql query failed");
             }
 
-            $count_datasets = (int) mysqli_num_rows($q_select_datasets);
+            $count_datasets = (int)mysqli_num_rows($q_select_datasets);
 
             if ($count_datasets < 1) {
                 // maybe generate empty statement ???
@@ -135,7 +135,7 @@ class MySQLExport {
             $content = "";
 //            $content .= $this->getInsertStatementHead();
             while ($row = mysqli_fetch_row($q_select_datasets)) {
-                if(($r % $this->maxrowsperinsert) == 0){
+                if (($r % $this->maxrowsperinsert) == 0) {
                     $content .= $this->getInsertStatementHead();
                 }
                 $content .= "(";
@@ -154,7 +154,7 @@ class MySQLExport {
                         $content .= ', ';
                     }
                 }
-                if (($r + 1) == $row_count || ($r % 400) == 399) {
+                if (($r + 1) == $row_count || ($r % $this->maxrowsperinsert) == ($this->maxrowsperinsert - 1)) {
                     $content .= ");\n\n";
                 } else {
                     $content .= "),\n";
@@ -189,12 +189,12 @@ class MySQLExport {
      * @param integer $level GZIP compression level (default: 9)
      * @return string New filename (with .gz appended) if success, or false if operation fails
      */
-    public function gzCompressFile($source, $level = 9){
+    public function gzCompressFile($source, $level = 9) {
         $dest = $source . '.gz';
         $mode = 'wb' . $level;
         $error = false;
         if ($fp_out = gzopen($dest, $mode)) {
-            if ($fp_in = fopen($source,'rb')) {
+            if ($fp_in = fopen($source, 'rb')) {
                 while (!feof($fp_in))
                     gzwrite($fp_out, fread($fp_in, 1024 * 512));
                 fclose($fp_in);
