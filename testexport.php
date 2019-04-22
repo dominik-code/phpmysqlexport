@@ -49,7 +49,10 @@ unlink("dump/".$filename);
 if(file_exists("dump/$filename".".gz")) {
     if(filesize("dump/$filename".".gz") > 1024*1024) {
         $export->removeDatasets("DELETE FROM `zuege` WHERE datum='$datum'");
+        die("remove finished");
     } else {
         die("manual control needed for : ". $filename);
     }
+} else {
+    die("file not found");
 }
