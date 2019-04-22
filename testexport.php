@@ -19,3 +19,5 @@ $export->setExportSQL("SELECT * FROM `errorlog` WHERE id < 300000 and id > 20000
 
 var_dump($export->doExport());
 var_dump($export->testInsertHead());
+
+var_dump(memory_get_peak_usage());
