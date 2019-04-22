@@ -21,3 +21,5 @@ var_dump($export->doExport());
 var_dump($export->testInsertHead());
 
 var_dump(memory_get_peak_usage());
+
+var_dump($export->gzCompressFile("testexport.sql"));
